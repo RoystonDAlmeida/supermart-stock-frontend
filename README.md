@@ -21,7 +21,7 @@ This is the frontend application for the Supermart Stock Management system. It p
 *   **Language:** [TypeScript](https://www.typescriptlang.org/)
 *   **UI Components:** [shadcn/ui](https://ui.shadcn.com/) (built on Radix UI & Tailwind CSS)
 *   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-*   **State Management:** React Context API (or potentially Zustand/Redux if implemented)
+*   **State Management:** React Context API
 *   **Data Fetching:** Native `fetch` API or a library like `axios`
 *   **Deployment:** Vercel
 
