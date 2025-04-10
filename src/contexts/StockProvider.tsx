@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import * as api from "@/services/api";
 import StockContext from "./StockContext";
+import { useAuth } from "./AuthContext";
 import { 
   Product, 
   SaleRecord, 
@@ -15,6 +16,7 @@ export const StockProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [sales, setSales] = useState<SaleRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { toast } = useToast();
+  const { isAuth, loading: authLoading } = useAuth(); // <--- Get auth state from context
 
   // Fetch data from API on mount
   useEffect(() => {
@@ -50,23 +52,41 @@ export const StockProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setSales(formattedSales);
       } catch (error) {
         console.error("Failed to fetch data:", error);
-        toast({
-          title: "Error",
-          description: "Failed to load data from server",
-          variant: "destructive",
-        });
+        if(isAuth)
+        {
+          // Only shows toast if it's not an initial auth loading phase
+          toast({
+            title: "Error",
+            description: "Failed to load data from server",
+            variant: "destructive",
+          });
+        }
+
+        // Clear data on error
+        setProducts([]);
+        setSales([]);
       } finally {
         setLoading(false);
       }
     };
 
-    // Only fetch the data if the user is authenticated - but don't put hooks in conditions
-    if(api.isAuthenticated()) {
+    if (authLoading) {
+      setLoading(true); // Show loading while auth is resolving
+      return; // Don't do anything until auth status is known
+    }
+
+    if (isAuth) {
+      // Call the function if the user is authenticated
       fetchData();
     } else {
-      setLoading(false); // Set loading to false if not authenticated
+      
+      // If user logs out or is not authenticated, clear the data
+      setProducts([]);
+      setSales([]);
+      setLoading(false); // Not loading if not authenticated
     }
-  }, [toast]);
+
+  }, [isAuth, authLoading, toast]);
 
   const updateProductStatus = (product: Product): ProductStatus => {
     if (product.stock <= 0) return "Out of Stock";
