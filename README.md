@@ -14,6 +14,14 @@ This is the frontend application for the Supermart Stock Management system. It p
 *   Responsive design for usability across different screen sizes.
 *   Connects to a backend API for data persistence.
 
+## Backend Repository
+
+The backend API that this frontend application consumes is developed and maintained in a separate repository. You can find the backend project here:
+
+*   **Backend Repository:** [https://github.com/RoystonDAlmeida/supermart-stock-backend](https://github.com/RoystonDAlmeida/supermart-stock-backend)
+
+Please refer to the backend repository's `README.md` for instructions on setting up and running the backend server, which is required for the frontend application to function correctly.
+
 ## Tech Stack
 
 *   **Framework:** [React](https://reactjs.org/)
